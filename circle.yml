@@ -12,12 +12,13 @@ dependencies:
         - echo y | android update sdk --no-ui --all --filter build-tools-23.0.2
 
 test:
+    pre:
+        - $ANDROID_HOME/tools/emulator -avd test-target -no-skin -no-audio -no-window -no-boot-anim:
+            background: true
+            parallel: true
+        - ./wait.sh:
+            parallel: true
     override:
         - (./gradlew assemble):
             timeout: 360
-        - emulator -avd circleci-android22 -no-audio -no-window:
-          background: true
-          parallel: true
-        - circle-android wait-for-boot
-        - (./gradlew connectedAndroidTest)
-
+        - ./gradlew connectedAndroidTestDebug -PdisablePreDex
