@@ -15,3 +15,4 @@ test:
     override:
         - (./gradlew assemble):
             timeout: 360
+        - (./gradlew connectedAndroidTest)
